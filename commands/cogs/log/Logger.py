@@ -301,7 +301,29 @@ class Logger(commands.Cog):
         
             await self.logger_channel.send(embed=embed)
     
-    
+    @commands.Cog.listener()
+    async def on_raw_message_edit(self, payload):
+
+        if self.logger_channel:
+            channel = self.bot.get_channel(payload.channel_id)
+
+            embed = nextcord.Embed(title='Raw Message Edit', color=nextcord.Color.blue())
+            embed.add_field(name='Channel', value=channel.mention if channel else payload.channel_id)
+            embed.add_field(name='Message ID', value=payload.message_id)
+
+            await self.logger_channel.send(embed=embed)
+            
+    @commands.Cog.listener() 
+    async def on_reaction_add(self, reaction, user):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Reaction Added', color=nextcord.Color.green())
+            embed.add_field(name='User', value=user.mention)
+            embed.add_field(name='Channel', value=reaction.message.channel.mention)
+            embed.add_field(name='Message', value=reaction.message.jump_url)
+            embed.add_field(name='Emoji', value=reaction.emoji)
+
+            await self.logger_channel.send(embed=embed)
 
     
                 
