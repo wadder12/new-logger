@@ -47,7 +47,7 @@ class Logger(commands.Cog):
                 return channel
         return None
     
-    
+    # * on message
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -76,6 +76,10 @@ class Logger(commands.Cog):
             embed.add_field(name='Before', value=before.content)
             embed.add_field(name='After', value=after.content)
             await self.logger_channel.send(embed=embed)
+
+# * end of on message
+
+# * member events
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -124,7 +128,9 @@ class Logger(commands.Cog):
                 embed.add_field(name='Before', value=before.name)
                 embed.add_field(name='After', value=after.name)
                 await self.logger_channel.send(embed=embed)
+# * end of member events
 
+# * start of guild events 
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel):
         if self.logger_channel:
@@ -203,7 +209,9 @@ class Logger(commands.Cog):
                 embed.add_field(name='Before', value=before.name)
                 embed.add_field(name='After', value=after.name)
                 await self.logger_channel.send(embed=embed)
+# * end of guild 
 
+# * start of invite events 
     @commands.Cog.listener()
     async def on_invite_create(self, invite):
         if self.logger_channel:
