@@ -869,8 +869,38 @@ class Logger(commands.Cog):
   # Check for speaker changes      
             
             
+    @commands.Cog.listener()
+    async def on_group_join(self, channel, user):
+
+        embed = nextcord.Embed(title='User Joined Group', color=nextcord.Color.green())
+        embed.add_field(name='Channel', value=channel.mention)
+        embed.add_field(name='User', value=user.mention)
+
+        await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener() # more metadata
+    async def on_group_remove(self, channel, user):
+
+        embed = nextcord.Embed(title='User Left Group', color=nextcord.Color.red())
+        embed.add_field(name='Channel', value=channel.mention)
+        embed.add_field(name='User', value=user.mention)
+
+        await self.logger_channel.send(embed=embed)
             
             
+    @commands.Cog.listener()
+    async def on_guild_scheduled_event_create(self, event):
+
+        embed = nextcord.Embed(title='Event Created', color=nextcord.Color.green())
+
+        embed.add_field(name='Name', value=event.name)
+        embed.add_field(name='Description', value=event.description)
+        embed.add_field(name='Start Time', value=event.scheduled_start_time)
+        embed.add_field(name='End Time', value=event.scheduled_end_time)
+        embed.add_field(name='Status', value=event.status)
+
+        await self.logger_channel.send(embed=embed)
             
             
             
