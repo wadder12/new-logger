@@ -325,6 +325,34 @@ class Logger(commands.Cog):
 
             await self.logger_channel.send(embed=embed)
 
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload):
+
+        if self.logger_channel:
+            channel = self.bot.get_channel(payload.channel_id)
+            message = await channel.fetch_message(payload.message_id)
+
+            embed = nextcord.Embed(title='Raw Reaction Added', color=nextcord.Color.green())
+            embed.add_field(name='User', value=f'<@{payload.user_id}>')
+            embed.add_field(name='Channel', value=channel.mention)
+            embed.add_field(name='Message', value=message.jump_url)
+            embed.add_field(name='Emoji', value=payload.emoji)
+
+            await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_reaction_remove(self, reaction, user):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Reaction Removed', color=nextcord.Color.red())
+            embed.add_field(name='User', value=user.mention)
+            embed.add_field(name='Channel', value=reaction.message.channel.mention)
+            embed.add_field(name='Message', value=reaction.message.jump_url)
+            embed.add_field(name='Emoji', value=reaction.emoji)
+
+            await self.logger_channel.send(embed=embed)
+            
     
                 
     def cog_unload(self):
