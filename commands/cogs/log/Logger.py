@@ -57,7 +57,16 @@ class Logger(commands.Cog):
             embed.add_field(name='Channel', value=message.channel.mention)
             embed.add_field(name='Content', value=message.content)
             await self.logger_channel.send(embed=embed)
-
+            
+            
+    @commands.Cog.listener()
+    async def on_bulk_message_delete(self, messages):
+        if self.logger_channel and messages and messages[0].channel != self.logger_channel:
+            embed = nextcord.Embed(title='Bulk Message Delete', color=nextcord.Color.red())
+            embed.add_field(name='Channel', value=messages[0].channel.mention)
+            embed.add_field(name='Message Count', value=len(messages))
+            await self.logger_channel.send(embed=embed)
+            
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         if self.logger_channel and message.channel != self.logger_channel:
@@ -154,7 +163,25 @@ class Logger(commands.Cog):
                 embed.add_field(name='Before', value=before.name)
                 embed.add_field(name='After', value=after.name)
                 await self.logger_channel.send(embed=embed)
-
+                
+    @commands.Cog.listener()
+    async def on_member_emojis_update(self, member, before, after):
+        if self.logger_channel:
+            if len(before) < len(after):
+                added_emoji = set(after) - set(before)
+                emoji = added_emoji.pop()
+                embed = nextcord.Embed(title='Emoji Added', color=nextcord.Color.green())
+                embed.add_field(name='Member', value=member.mention)
+                embed.add_field(name='Emoji', value=str(emoji))
+                await self.logger_channel.send(embed=embed)
+            elif len(before) > len(after):
+                removed_emoji = set(before) - set(after)
+                emoji = removed_emoji.pop()
+                embed = nextcord.Embed(title='Emoji Removed', color=nextcord.Color.red())
+                embed.add_field(name='Member', value=member.mention)
+                embed.add_field(name='Emoji', value=str(emoji))
+                await self.logger_channel.send(embed=embed)
+                
     @commands.Cog.listener()
     async def on_member_role_update(self, member, before, after):
         if self.logger_channel:
@@ -232,15 +259,10 @@ class Logger(commands.Cog):
             embed.add_field(name='Channel', value=invite.channel.mention)
             embed.add_field(name='Author', value=invite.inviter.mention)
             await self.logger_channel.send(embed=embed)
+# * end of invite events 
 
-    @commands.Cog.listener()
-    async def on_bulk_message_delete(self, messages):
-        if self.logger_channel and messages and messages[0].channel != self.logger_channel:
-            embed = nextcord.Embed(title='Bulk Message Delete', color=nextcord.Color.red())
-            embed.add_field(name='Channel', value=messages[0].channel.mention)
-            embed.add_field(name='Message Count', value=len(messages))
-            await self.logger_channel.send(embed=embed)
-            
+
+# * on typing events             
     @commands.Cog.listener() 
     async def on_typing(self, channel, user, when):
 
@@ -263,7 +285,10 @@ class Logger(commands.Cog):
             embed.add_field(name='User ID', value=payload.user_id)
             embed.add_field(name='When', value=payload.when)
 
-            await self.logger_channel.send(embed=embed)       
+            await self.logger_channel.send(embed=embed) 
+            
+# * on typing events             
+      
     @commands.Cog.listener() #
     async def on_raw_message_delete(self, payload):
 
