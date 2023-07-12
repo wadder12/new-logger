@@ -1014,9 +1014,9 @@ class Logger(commands.Cog):
         embed = nextcord.Embed(title='Audit Log Updated', color=nextcord.Color.dark_gold())
 
         user = entry.user
-        embed.add_field(name='User', value=f"{user} (ID: {user.id})")
+        embed.add_field(name='User', value=user.display_name)
 
-        action = entry.action 
+        action = entry.action
         embed.add_field(name='Action', value=action.name)
 
         if entry.reason:
@@ -1024,7 +1024,11 @@ class Logger(commands.Cog):
 
         if entry.target:
             target = entry.target
-            embed.add_field(name='Target', value=f"{target} (ID: {target.id})")
+            if isinstance(target, nextcord.User):
+                target_name = f"{target.name}#{target.discriminator}" 
+            else:
+                target_name = target.name
+            embed.add_field(name='Target', value=target_name)
 
         await self.logger_channel.send(embed=embed)
   
