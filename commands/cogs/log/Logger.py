@@ -94,7 +94,7 @@ class Logger(commands.Cog):
 
 # * member events
 
-    @commands.Cog.listener()
+    @commands.Cog.listener() # updated jul 12
     async def on_member_join(self, member):
         
 
