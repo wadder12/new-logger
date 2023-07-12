@@ -70,13 +70,26 @@ class Logger(commands.Cog):
             await self.logger_channel.send(embed=embed)
             
             
-    @commands.Cog.listener()
+    @commands.Cog.listener() 
     async def on_bulk_message_delete(self, messages):
-        if self.logger_channel and messages and messages[0].channel != self.logger_channel:
+
+        if len(messages) > 5:
+
             embed = nextcord.Embed(title='Bulk Message Delete', color=nextcord.Color.red())
-            embed.add_field(name='Channel', value=messages[0].channel.mention)
-            embed.add_field(name='Message Count', value=len(messages))
-            await self.logger_channel.send(embed=embed)
+            embed.set_author(name=f"{len(messages)} Messages Deleted")
+
+            channel = messages[0].channel
+            embed.add_field(name='Channel', value=channel.mention)
+
+            msg_links = []
+            for msg in messages[:5]: 
+                msg_links.append(f"[{msg.created_at.strftime('%H:%M:%S')}]({msg.jump_url}) {msg.author.mention}: {msg.content}")
+            
+            embed.description = "\n".join(msg_links)
+            embed.add_field(name='Total Messages', value=len(messages))
+
+            if self.logger_channel and channel != self.logger_channel:
+                await self.logger_channel.send(embed=embed)
             
     @commands.Cog.listener()
     async def on_message_delete(self, message):
