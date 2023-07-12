@@ -785,7 +785,28 @@ class Logger(commands.Cog):
             
             
             
-            
+    @commands.Cog.listener()
+    async def on_guild_available(self, guild):
+
+        embed = nextcord.Embed(title='Guild Available', color=nextcord.Color.green())
+        embed.add_field(name='Guild', value=guild.name)
+        embed.add_field(name='Guild ID', value=guild.id)
+        embed.add_field(name='Region', value=guild.region)
+        embed.add_field(name='Owner', value=guild.owner)
+
+        await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_guild_unavailable(self, guild):
+
+        embed = nextcord.Embed(title='Guild Unavailable', color=nextcord.Color.red())
+        embed.add_field(name='Guild', value=guild.name)
+        embed.add_field(name='Guild ID', value=guild.id)
+        embed.add_field(name='Region', value=guild.region)
+        embed.add_field(name='Owner', value=guild.owner)
+
+        await self.logger_channel.send(embed=embed)
             
             
             
