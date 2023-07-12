@@ -936,7 +936,26 @@ class Logger(commands.Cog):
         await self.logger_channel.send(embed=embed) 
             
             
-            
+    @commands.Cog.listener() 
+    async def on_guild_scheduled_event_user_add(self, event, user):
+
+        embed = nextcord.Embed(title='User Added to Event', color=nextcord.Color.green())
+
+        embed.add_field(name='Event', value=event.name)
+        embed.add_field(name='User', value=user.mention)
+
+        await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_guild_scheduled_event_user_remove(self, event, user):
+
+        embed = nextcord.Embed(title='User Removed from Event', color=nextcord.Color.red())
+
+        embed.add_field(name='Event', value=event.name)
+        embed.add_field(name='User', value=user.mention)
+
+        await self.logger_channel.send(embed=embed)
             
                 
     def cog_unload(self):
