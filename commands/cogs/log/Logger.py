@@ -256,7 +256,17 @@ class Logger(commands.Cog):
             embed.add_field(name='When', value=payload.when)
 
             await self.logger_channel.send(embed=embed)       
-            
+    @commands.Cog.listener() #
+    async def on_raw_message_delete(self, payload):
+
+        if self.logger_channel:
+            channel = self.bot.get_channel(payload.channel_id)
+
+            embed = nextcord.Embed(title='Raw Message Delete', color=nextcord.Color.red())
+            embed.add_field(name='Channel', value=channel.mention if channel else payload.channel_id)
+            embed.add_field(name='Message ID', value=payload.message_id)
+        
+            await self.logger_channel.send(embed=embed)
     
     
 
