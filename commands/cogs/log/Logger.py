@@ -96,10 +96,26 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
+        
+        if member.bot:
+            return
+
+        embed = nextcord.Embed(title='Member Joined', color=nextcord.Color.green())
+        embed.set_thumbnail(url=member.avatar.url)
+        embed.add_field(name='Member', value=f'{member.mention} (ID: {member.id})')
+        embed.add_field(name='Created At', value=member.created_at.strftime('%B %d, %Y'))
+        
+        total = len(self.bot.users)
+        embed.set_footer(text=f'Member #{total}')
+
         if self.logger_channel:
-            embed = nextcord.Embed(title='Member Joined', color=nextcord.Color.green())
-            embed.add_field(name='Member', value=member.mention)
             await self.logger_channel.send(embed=embed)
+
+        role = get(member.guild.roles, name="Members") 
+        await member.add_roles(role)
+
+        channel = get(member.guild.channels, name="general")
+        await channel.send(f"Welcome to the server, {member.mention}!")
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
