@@ -1014,10 +1014,10 @@ class Logger(commands.Cog):
 
         embed = nextcord.Embed(title='Audit Log Updated', color=nextcord.Color.dark_gold())
 
-        user = entry.user  
+        user = entry.user
         embed.add_field(name='User', value=f"{user} (ID: {user.id})")
 
-        action = entry.action  
+        action = entry.action 
         embed.add_field(name='Action', value=action.name)
 
         if entry.reason:
