@@ -1,11 +1,15 @@
 import json
 import nextcord
 from nextcord.ext import commands
+from nextcord.webhook import Webhook
+
+#...zzZ
 
 class Logger(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.logger_channel = None
+
 
     def load_config(self):
         try:
@@ -1039,6 +1043,9 @@ class Logger(commands.Cog):
 
         elif isinstance(target, nextcord.StageChannel):
             target_name = target.name
+            
+        elif isinstance(target, Webhook):
+            target_name = target.name 
 
 
         elif isinstance(target, nextcord.Thread):
