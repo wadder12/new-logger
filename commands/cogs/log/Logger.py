@@ -1046,7 +1046,7 @@ class Logger(commands.Cog):
         elif isinstance(target, nextcord.Webhook):
             target_name = await self.fetch_webhook_name(target.id)
             if target_name is None:
-                target_name = f"Unknown target (ID: {target.id})"
+                target_name = f"Unknown target (WIP) (ID: {target.id})"
 
         elif isinstance(target, nextcord.Thread):
             target_name = f"Thread: {target.name}"
