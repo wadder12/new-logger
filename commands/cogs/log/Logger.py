@@ -97,8 +97,6 @@ class Logger(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         
-        if member.bot:
-            return
 
         embed = nextcord.Embed(title='Member Joined', color=nextcord.Color.green())
         embed.set_thumbnail(url=member.avatar.url)
