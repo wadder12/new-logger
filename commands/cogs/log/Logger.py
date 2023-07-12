@@ -1019,9 +1019,6 @@ class Logger(commands.Cog):
         action = entry.action
         embed.add_field(name='Action', value=action.name)
 
-        if entry.reason:
-            embed.add_field(name='Reason', value=entry.reason)
-
         if entry.target:
             target = entry.target
 
@@ -1030,14 +1027,30 @@ class Logger(commands.Cog):
 
         elif isinstance(target, nextcord.Role):
             target_name = target.name
-        
+
         elif isinstance(target, nextcord.TextChannel):
             target_name = target.name
 
-        # Add cases for other target types
-        
+        elif isinstance(target, nextcord.VoiceChannel):
+            target_name = target.name  
+
+        elif isinstance(target, nextcord.CategoryChannel):
+            target_name = target.name
+
+        elif isinstance(target, nextcord.StageChannel):
+            target_name = target.name
+
+        elif isinstance(target, nextcord.StoreChannel): 
+            target_name = target.name
+
+        elif isinstance(target, nextcord.Thread):
+            target_name = target.name
+
         else:
-            target_name = str(target) 
+            try:
+                target_name = f"{target.name} (ID: {target.id})"
+            except AttributeError:
+                target_name = f"Unknown target (ID: {target.id})"
 
         embed.add_field(name='Target', value=target_name)
 
