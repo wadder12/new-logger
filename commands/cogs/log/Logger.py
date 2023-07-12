@@ -379,7 +379,78 @@ class Logger(commands.Cog):
             await self.logger_channel.send(embed=embed)
             
             
+    @commands.Cog.listener()
+    async def on_raw_reaction_clear(self, payload):
 
+        if self.logger_channel:
+            channel = self.bot.get_channel(payload.channel_id)
+            
+            embed = nextcord.Embed(title='Raw Reactions Cleared', color=nextcord.Color.red())
+            embed.add_field(name='Channel', value=channel.mention)
+            embed.add_field(name='Message ID', value=payload.message_id)
+
+            await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_reaction_clear_emoji(self, reaction):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Reaction Emoji Cleared', color=nextcord.Color.red())
+            embed.add_field(name='Emoji', value=reaction.emoji)
+            embed.add_field(name='Channel', value=reaction.message.channel.mention)
+            embed.add_field(name='Message', value=reaction.message.jump_url)
+
+            await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_clear_emoji(self, payload):
+
+        if self.logger_channel:
+            channel = self.bot.get_channel(payload.channel_id)
+            
+            embed = nextcord.Embed(title='Raw Reaction Emoji Cleared', color=nextcord.Color.red())
+            embed.add_field(name='Channel', value=channel.mention) 
+            embed.add_field(name='Message ID', value=payload.message_id)
+            embed.add_field(name='Emoji', value=payload.emoji)
+
+            await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener() 
+    async def on_interaction(self, interaction):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Interaction', color=nextcord.Color.purple())
+            embed.add_field(name='Type', value=interaction.type)
+            embed.add_field(name='Name', value=interaction.data.name)
+            embed.add_field(name='User', value=interaction.user)
+            embed.add_field(name='ID', value=interaction.id)
+
+            await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_private_channel_update(self, before, after):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Private Channel Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before)
+            embed.add_field(name='After', value=after)
+
+            await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener() 
+    async def on_private_channel_pins_update(self, channel, last_pin):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Private Channel Pins Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Channel', value=channel)
+            embed.add_field(name='Last Pin', value=last_pin)
+
+            await self.logger_channel.send(embed=embed)
 
 
 
