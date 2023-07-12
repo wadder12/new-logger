@@ -838,7 +838,26 @@ class Logger(commands.Cog):
 
         await self.logger_channel.send(embed=embed)
             
-            
+    @commands.Cog.listener() # ! Additional logic could be added to check for changes in the speaker list and embed those as well.
+    async def on_stage_instance_update(self, before, after):
+
+        if before.topic != after.topic:
+            # Stage channel topic updated
+            embed = nextcord.Embed(title='Stage Channel Topic Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before.topic)
+            embed.add_field(name='After', value=after.topic)
+
+            await self.logger_channel.send(embed=embed)
+
+        if before.privacy_level != after.privacy_level:
+            # Privacy level updated
+            embed = nextcord.Embed(title='Stage Channel Privacy Updated', color=nextcord.Color.purple())
+            embed.add_field(name='Before', value=before.privacy_level)
+            embed.add_field(name='After', value=after.privacy_level)
+
+            await self.logger_channel.send(embed=embed)
+
+  # Check for speaker changes      
             
             
             
