@@ -1044,7 +1044,7 @@ class Logger(commands.Cog):
             target_name = f"Stage Channel: {target.name}"
             
         elif isinstance(target, nextcord.Webhook):
-            target_name = f"Webhook: {target.name}"
+            target_name = f"Webhook: {target.name} (ID: {target.id})"
 
         elif isinstance(target, nextcord.Thread):
             target_name = f"Thread: {target.name}"
@@ -1055,6 +1055,7 @@ class Logger(commands.Cog):
         embed.add_field(name='Target', value=target_name)
 
         await self.logger_channel.send(embed=embed)
+
 
   
   
