@@ -1014,7 +1014,6 @@ class Logger(commands.Cog):
   
     @commands.Cog.listener()
     async def on_guild_audit_log_entry_create(self, entry):
-
         embed = nextcord.Embed(title='Audit Log Updated', color=nextcord.Color.dark_gold())
 
         user = entry.user
@@ -1023,43 +1022,40 @@ class Logger(commands.Cog):
         action = entry.action
         embed.add_field(name='Action', value=action.name)
 
-        if entry.target:
-            target = entry.target
+        target = entry.target
+        target_name = None
 
         if isinstance(target, nextcord.User):
             target_name = f"{target.name}#{target.discriminator}"
 
         elif isinstance(target, nextcord.Role):
-            target_name = target.name
+            target_name = f"Role: {target.name}"
 
         elif isinstance(target, nextcord.TextChannel):
-            target_name = target.name
+            target_name = f"Text Channel: {target.name}"
 
         elif isinstance(target, nextcord.VoiceChannel):
-            target_name = target.name  
+            target_name = f"Voice Channel: {target.name}"  
 
         elif isinstance(target, nextcord.CategoryChannel):
-            target_name = target.name
+            target_name = f"Category: {target.name}"
 
         elif isinstance(target, nextcord.StageChannel):
-            target_name = target.name
+            target_name = f"Stage Channel: {target.name}"
             
-        elif isinstance(target, Webhook):
-            target_name = target.name 
-
+        elif isinstance(target, nextcord.Webhook):
+            target_name = f"Webhook: {target.name}"
 
         elif isinstance(target, nextcord.Thread):
-            target_name = target.name
+            target_name = f"Thread: {target.name}"
 
         else:
-            try:
-                target_name = f"{target.name} (ID: {target.id})"
-            except AttributeError:
-                target_name = f"Unknown target (ID: {target.id})"
+            target_name = f"Unknown target (ID: {target.id})"
 
         embed.add_field(name='Target', value=target_name)
 
         await self.logger_channel.send(embed=embed)
+
   
   
   
