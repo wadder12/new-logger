@@ -303,23 +303,7 @@ class Logger(commands.Cog):
     
     
 
-    @commands.Cog.listener()
-    async def on_member_emojis_update(self, member, before, after):
-        if self.logger_channel:
-            if len(before) < len(after):
-                added_emoji = set(after) - set(before)
-                emoji = added_emoji.pop()
-                embed = nextcord.Embed(title='Emoji Added', color=nextcord.Color.green())
-                embed.add_field(name='Member', value=member.mention)
-                embed.add_field(name='Emoji', value=str(emoji))
-                await self.logger_channel.send(embed=embed)
-            elif len(before) > len(after):
-                removed_emoji = set(before) - set(after)
-                emoji = removed_emoji.pop()
-                embed = nextcord.Embed(title='Emoji Removed', color=nextcord.Color.red())
-                embed.add_field(name='Member', value=member.mention)
-                embed.add_field(name='Emoji', value=str(emoji))
-                await self.logger_channel.send(embed=embed)
+    
                 
     def cog_unload(self):
         self.save_config()
