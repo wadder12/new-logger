@@ -18,18 +18,6 @@ bot = commands.Bot(command_prefix='q', intents=nextcord.Intents.all(), activity=
 @bot.event
 async def on_ready():
 
-  # Fancy start up banner
-  print(f"""
-
-██████╗  ██████╗ ███╗   ███╗███████╗     ██████╗ ██████╗ ███╗   ███╗███████╗
-██╔═══██╗██╔═══██╗████╗ ████║██╔════╝    ██╔════╝██╔═══██╗████╗ ████║██╔════╝
-██║   ██║██║   ██║██╔████╔██║█████╗      ██║     ██║   ██║██╔████╔██║█████╗  
-██║▄▄ ██║██║▄▄ ██║██║╚██╔╝██║██╔══╝      ██║     ██║▄▄ ██║██║╚██╔╝██║██╔══╝  
-╚██████╔╝╚██████╔╝██║ ╚═╝ ██║███████╗    ╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
- ╚══▀▀═╝  ╚══▀▀═╝ ╚═╝     ╚═╝╚══════╝     ╚═════╝ ╚══▀▀═╝ ╚═╝     ╚═╝╚══════╝
-                                                                                
-""")
-
   # Print out server count in a cool style
   guild_count = len(bot.guilds)
   print(f"> Connected to {guild_count} servers!")
