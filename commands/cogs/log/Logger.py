@@ -639,28 +639,27 @@ class Logger(commands.Cog):
             
             
             
-    @commands.Cog.listener()
+    @commands.Cog.listener() 
     async def on_presence_update(self, before, after):
 
-        guild = after.guild
-
-        if before.status != after.status:
-            # Status changed
-            embed = nextcord.Embed(title='Status Updated', color=nextcord.Color.gold())
-            embed.add_field(name='Member', value=after.mention)
-            embed.add_field(name='Before', value=before.status)
-            embed.add_field(name='After', value=after.status)
-
-            await self.logger_channel.send(embed=embed)
-
         if before.activity != after.activity:
+
             # Activity changed
             embed = nextcord.Embed(title='Activity Updated', color=nextcord.Color.green())
-            embed.add_field(name='Member', value=after.mention)
-            embed.add_field(name='Before', value=before.activity)
-            embed.add_field(name='After', value=after.activity)
+            
+            embed.add_field(name='Member', value=after.display_name)
 
-            await self.logger_channel.send(embed=embed)       
+            if before.activity is None:
+                embed.add_field(name='Before', value='No activity')
+            else:
+                embed.add_field(name='Before', value=before.activity.name)
+
+            if after.activity is None:
+                embed.add_field(name='After', value='No activity')
+            else:
+                embed.add_field(name='After', value=after.activity.name)
+
+            await self.logger_channel.send(embed=embed)
             
     """ # ! need to add webhook for me personally 
     @commands.Cog.listener()
