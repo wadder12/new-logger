@@ -724,7 +724,26 @@ class Logger(commands.Cog):
             
             
             
-            
+    @commands.Cog.listener()
+    async def on_guild_role_update(self, before, after):
+
+        if before.name != after.name:
+            # Role name changed
+            embed = nextcord.Embed(title='Role Name Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before.name)
+            embed.add_field(name='After', value=after.name)
+
+            await self.logger_channel.send(embed=embed)
+
+        if before.color != after.color:
+            # Role color changed
+            embed = nextcord.Embed(title='Role Color Updated', color=after.color)
+            embed.add_field(name='Before', value=before.color)
+            embed.add_field(name='After', value=after.color)
+
+            await self.logger_channel.send(embed=embed)
+
+    # Add checks for other role changes  
             
             
             
