@@ -18,29 +18,7 @@ bot = commands.Bot(command_prefix='q', intents=nextcord.Intents.all(), activity=
 @bot.event
 async def on_ready():
     print('---------------------------------------')
-    print('          🚀 Bot is now online! 🚀       ')
-    print('---------------------------------------')
-    print(f'Logged in as {bot.user.name} ({bot.user.id})')
-    print('---------------------------------------')
-
-    animation_frames = [
-        "█▒▒▒▒▒▒▒▒▒",
-        "██▒▒▒▒▒▒▒▒",
-        "███▒▒▒▒▒▒▒",
-        "████▒▒▒▒▒▒",
-        "█████▒▒▒▒▒",
-        "██████▒▒▒▒",
-        "███████▒▒▒",
-        "████████▒▒",
-        "█████████▒",
-        "██████████",
-    ]
-
-    for frame in animation_frames:
-        cprint(f"\rHacking in progress... {frame}", "green", attrs=["bold"], end="")
-        time.sleep(0.5)
-
-    print("\n---------------------------------------")
+    
 
 
 """
@@ -61,6 +39,8 @@ for root, dirs, files in os.walk(cogs_dir):
     if "__init__.py" in files:
         loaded_folders.append(root)
 
+
+   
 
 bot.run(token)
 

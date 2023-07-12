@@ -46,6 +46,8 @@ class Logger(commands.Cog):
             if channel.name == logger_channel_name:
                 return channel
         return None
+    
+    
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -230,6 +232,33 @@ class Logger(commands.Cog):
             embed.add_field(name='Channel', value=messages[0].channel.mention)
             embed.add_field(name='Message Count', value=len(messages))
             await self.logger_channel.send(embed=embed)
+            
+    @commands.Cog.listener() 
+    async def on_typing(self, channel, user, when):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='User Typing', color=nextcord.Color.blue())
+            embed.add_field(name='Channel', value=channel.mention)
+            embed.add_field(name='User', value=user.mention)
+            embed.add_field(name='When', value=when)
+
+            await self.logger_channel.send(embed=embed)
+            
+    @commands.Cog.listener() #
+    async def on_raw_typing(self, payload):
+
+        if self.logger_channel:
+            channel = self.bot.get_channel(payload.channel_id)
+
+            embed = nextcord.Embed(title='Raw User Typing', color=nextcord.Color.blue())
+            embed.add_field(name='Channel', value=channel.mention if channel else payload.channel_id) 
+            embed.add_field(name='User ID', value=payload.user_id)
+            embed.add_field(name='When', value=payload.when)
+
+            await self.logger_channel.send(embed=embed)       
+            
+    
+    
 
     @commands.Cog.listener()
     async def on_member_emojis_update(self, member, before, after):
