@@ -254,14 +254,23 @@ class Logger(commands.Cog):
 # * start of invite events 
     @commands.Cog.listener()
     async def on_invite_create(self, invite):
-        if self.logger_channel:
-            embed = nextcord.Embed(title='Invite Created', color=nextcord.Color.green())
-            embed.add_field(name='Code', value=invite.code)
-            embed.add_field(name='Guild', value=invite.guild.name)
-            embed.add_field(name='Channel', value=invite.channel.mention)
-            embed.add_field(name='Author', value=invite.inviter.mention)
-            
-            await self.logger_channel.send(embed=embed)
+
+        embed = nextcord.Embed(title='Invite Created', color=nextcord.Color.green())
+
+        embed.add_field(name='Code', value=invite.code)
+        embed.add_field(name='Channel', value=invite.channel.mention)
+        embed.add_field(name='Inviter', value=invite.inviter.mention)
+
+        if invite.max_age > 0:
+            embed.add_field(name='Max Age', value=f"{invite.max_age} seconds")
+
+        if invite.max_uses > 0:
+            embed.add_field(name='Max Uses', value=invite.max_uses)
+
+        if invite.temporary:
+            embed.add_field(name='Temporary', value='Yes')
+
+        await self.logger_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_invite_delete(self, invite):
