@@ -452,7 +452,105 @@ class Logger(commands.Cog):
 
             await self.logger_channel.send(embed=embed)
 
+    @commands.Cog.listener()
+    async def on_guild_channel_update(self, before, after):
 
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Guild Channel Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before.mention)
+            embed.add_field(name='After', value=after.mention)
+
+            await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener() 
+    async def on_guild_channel_pins_update(self, channel, last_pin):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Guild Channel Pins Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Channel', value=channel.mention)
+            embed.add_field(name='Last Pin', value=last_pin)
+
+            await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_thread_create(self, thread):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Thread Created', color=nextcord.Color.green())
+            embed.add_field(name='Thread', value=thread.mention)
+
+            await self.logger_channel.send(embed=embed)
+
+    @commands.Cog.listener()  
+    async def on_thread_join(self, thread):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Thread Joined', color=nextcord.Color.green())
+            embed.add_field(name='Thread', value=thread.mention)
+
+            await self.logger_channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_thread_remove(self, thread):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Thread Removed', color=nextcord.Color.red())
+            embed.add_field(name='Thread', value=thread.mention)
+
+            await self.logger_channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_thread_delete(self, thread):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Thread Deleted', color=nextcord.Color.red())
+            embed.add_field(name='Thread', value=thread.mention)
+
+            await self.logger_channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_thread_member_join(self, member):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='User Joined Thread', color=nextcord.Color.green())
+            embed.add_field(name='Thread', value=member.thread.mention)
+            embed.add_field(name='User', value=member.user.mention)
+
+            await self.logger_channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_thread_member_remove(self, member):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='User Left Thread', color=nextcord.Color.red())
+            embed.add_field(name='Thread', value=member.thread.mention)
+            embed.add_field(name='User', value=member.user.mention)
+
+            await self.logger_channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_thread_update(self, before, after):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Thread Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before.mention)
+            embed.add_field(name='After', value=after.mention)
+
+            await self.logger_channel.send(embed=embed)
+
+    # Other thread listeners
+
+    @commands.Cog.listener() 
+    async def on_integration_create(self, integration):
+
+        if self.logger_channel:
+            embed = nextcord.Embed(title='Integration Created', color=nextcord.Color.green())
+            embed.add_field(name='Integration', value=integration.name)
+            embed.add_field(name='ID', value=integration.id)
+
+            await self.logger_channel.send(embed=embed)
 
 
 
