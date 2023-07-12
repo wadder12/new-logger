@@ -957,7 +957,16 @@ class Logger(commands.Cog):
 
         await self.logger_channel.send(embed=embed)
         
-    nextcord.on_auto_moderation_rule_create(rule)
+    @commands.Cog.listener() 
+    async def on_auto_moderation_rule_create(self, rule):
+
+        embed = nextcord.Embed(title='AutoMod Rule Created', color=nextcord.Color.green())
+
+        embed.add_field(name='Rule', value=rule.name)
+        embed.add_field(name='Rule ID', value=rule.id)
+        embed.add_field(name='Creator', value=rule.creator.mention)
+
+        await self.logger_channel.send(embed=embed)
             
                 
     def cog_unload(self):
