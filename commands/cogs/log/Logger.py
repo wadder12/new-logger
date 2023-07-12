@@ -1040,8 +1040,6 @@ class Logger(commands.Cog):
         elif isinstance(target, nextcord.StageChannel):
             target_name = target.name
 
-        elif isinstance(target, nextcord.StoreChannel): 
-            target_name = target.name
 
         elif isinstance(target, nextcord.Thread):
             target_name = target.name
