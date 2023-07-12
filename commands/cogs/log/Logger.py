@@ -903,7 +903,37 @@ class Logger(commands.Cog):
         await self.logger_channel.send(embed=embed)
             
             
-            
+    @commands.Cog.listener()
+    async def on_guild_scheduled_event_update(self, before, after):
+
+        if before.name != after.name:
+            # Name changed
+            embed = nextcord.Embed(title='Event Name Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before.name)
+            embed.add_field(name='After', value=after.name)
+
+            await self.logger_channel.send(embed=embed)
+
+        if before.scheduled_start_time != after.scheduled_start_time:
+            # Start time changed
+            embed = nextcord.Embed(title='Event Start Time Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before.scheduled_start_time)
+            embed.add_field(name='After', value=after.scheduled_start_time)
+
+            await self.logger_channel.send(embed=embed)
+
+    # Check other relevant fields for changes
+
+
+    @commands.Cog.listener()
+    async def on_guild_scheduled_event_delete(self, event):
+    
+        embed = nextcord.Embed(title='Event Deleted', color=nextcord.Color.red())
+
+        embed.add_field(name='Name', value=event.name)
+        embed.add_field(name='Scheduled Start Time', value=event.scheduled_start_time)
+
+        await self.logger_channel.send(embed=embed) 
             
             
             
