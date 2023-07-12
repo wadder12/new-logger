@@ -1024,11 +1024,22 @@ class Logger(commands.Cog):
 
         if entry.target:
             target = entry.target
-            if isinstance(target, nextcord.User):
-                target_name = f"{target.name}#{target.discriminator}" 
-            else:
-                target_name = target.name
-            embed.add_field(name='Target', value=target_name)
+
+        if isinstance(target, nextcord.User):
+            target_name = f"{target.name}#{target.discriminator}"
+
+        elif isinstance(target, nextcord.Role):
+            target_name = target.name
+        
+        elif isinstance(target, nextcord.TextChannel):
+            target_name = target.name
+
+        # Add cases for other target types
+        
+        else:
+            target_name = str(target) 
+
+        embed.add_field(name='Target', value=target_name)
 
         await self.logger_channel.send(embed=embed)
   
