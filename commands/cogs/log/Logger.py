@@ -1006,6 +1006,26 @@ class Logger(commands.Cog):
   
   
   
+    @commands.Cog.listener()
+    async def on_guild_audit_log_entry_create(self, entry):
+
+        embed = nextcord.Embed(title='Audit Log Updated', color=nextcord.Color.dark_gold())
+
+        user = entry.user  
+        embed.add_field(name='User', value=f"{user} (ID: {user.id})")
+
+        action = entry.action  
+        embed.add_field(name='Action', value=action.name)
+
+        if entry.reason:
+            embed.add_field(name='Reason', value=entry.reason)
+
+        if entry.target:
+            target = entry.target
+            embed.add_field(name='Target', value=f"{target} (ID: {target.id})")
+
+        await self.logger_channel.send(embed=embed)
+  
   
   
   
