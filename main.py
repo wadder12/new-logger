@@ -25,15 +25,14 @@ async def on_ready():
   
 
   # Send a neat embed to log channel
-  embed = nextcord.Embed(title="Bot is ready!", color=0x00ff00)
-  embed.set_thumbnail(url=bot.user.avatar.url)
-  embed.add_field(name="Servers", value=guild_count, inline=True)
-  embed.add_field(name="Latency", value=f"{bot.latency*1000:.2f} ms", inline=True)
+  #embed = nextcord.Embed(title="Bot is ready!", color=0x00ff00)
+  #embed.set_thumbnail(url=bot.user.avatar.url)
+  #embed.add_field(name="Servers", value=guild_count, inline=True)
+  #embed.add_field(name="Latency", value=f"{bot.latency*1000:.2f} ms", inline=True)
   
-  log_channel = bot.get_channel(1116541851516817469)
-  await log_channel.send(embed=embed)
+  #log_channel = bot.get_channel(1116541851516817469)
+  #await log_channel.send(embed=embed)
 
-  
   
   print(f"> {bot.user.name} is ready to go!")
     
