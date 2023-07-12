@@ -93,12 +93,26 @@ class Logger(commands.Cog):
             
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if self.logger_channel and message.channel != self.logger_channel:
+
+        
+
             embed = nextcord.Embed(title='Message Deleted', color=nextcord.Color.red())
+            embed.set_author(name=str(message.author), icon_url=message.author.avatar.url)
+
             embed.add_field(name='Author', value=message.author.mention)
             embed.add_field(name='Channel', value=message.channel.mention)
-            embed.add_field(name='Content', value=message.content)
-            await self.logger_channel.send(embed=embed)
+
+            if len(message.content) > 1024:
+                content = f"{message.content[:1021]}..."
+            else: 
+                content = message.content
+            
+            embed.add_field(name='Content', value=content, inline=False)
+
+            embed.set_footer(text=f"Deleted at {message.created_at.strftime('%m/%d/%Y %I:%M:%S %p')}")
+
+            if self.logger_channel and message.channel != self.logger_channel:
+                await self.logger_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
