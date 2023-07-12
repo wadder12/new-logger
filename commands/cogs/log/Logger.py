@@ -704,6 +704,43 @@ class Logger(commands.Cog):
     # Add additional checks for relevant guild changes
             
             
+    @commands.Cog.listener()
+    async def on_guild_role_create(self, role):
+
+        embed = nextcord.Embed(title='Role Created', color=nextcord.Color.green())
+        embed.add_field(name='Role', value=role.mention)
+        embed.add_field(name='Role ID', value=role.id)
+
+        await self.logger_channel.send(embed=embed)
+
+    @commands.Cog.listener() 
+    async def on_guild_role_delete(self, role):
+
+        embed = nextcord.Embed(title='Role Deleted', color=nextcord.Color.red())
+        embed.add_field(name='Role', value=role.name)
+        embed.add_field(name='Role ID', value=role.id)
+
+        await self.logger_channel.send(embed=embed)       
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
             
             
