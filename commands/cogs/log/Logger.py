@@ -809,7 +809,34 @@ class Logger(commands.Cog):
         await self.logger_channel.send(embed=embed)
             
             
-            
+    @commands.Cog.listener()
+    async def on_stage_instance_create(self, stage_instance):
+
+        embed = nextcord.Embed(title='Stage Channel Created', color=nextcord.Color.green())
+
+        embed.add_field(name='Channel', value=stage_instance.channel.mention)
+        embed.add_field(name='Topic', value=stage_instance.topic)
+        embed.add_field(name='Privacy Level', value=stage_instance.privacy_level)
+        
+        speakers = ', '.join([m.mention for m in stage_instance.speakers])
+        embed.add_field(name='Speakers', value=speakers)
+
+        await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_stage_instance_delete(self, stage_instance):
+
+        embed = nextcord.Embed(title='Stage Channel Deleted', color=nextcord.Color.red())
+
+        embed.add_field(name='Channel', value=stage_instance.channel.mention)
+        embed.add_field(name='Topic', value=stage_instance.topic)
+        embed.add_field(name='Privacy Level', value=stage_instance.privacy_level)
+        
+        speakers = ', '.join([m.mention for m in stage_instance.speakers])
+        embed.add_field(name='Speakers', value=speakers)
+
+        await self.logger_channel.send(embed=embed)
             
             
             
