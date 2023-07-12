@@ -117,10 +117,24 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
+
+        embed = nextcord.Embed(title='Member Left', color=nextcord.Color.dark_red())
+        embed.set_thumbnail(url=member.avatar.url)
+        embed.add_field(name='Member', value=f'{member.mention} (ID: {member.id})')
+        embed.add_field(name='Joined At', value=member.joined_at.strftime('%B %d, %Y'))
+        
+        total = len(self.bot.users)
+        embed.set_footer(text=f'Remaining: {total}')
+
         if self.logger_channel:
-            embed = nextcord.Embed(title='Member Left', color=nextcord.Color.dark_red())
-            embed.add_field(name='Member', value=member.mention)
             await self.logger_channel.send(embed=embed)
+
+        role = get(member.guild.roles, name="Members")
+        if role in member.roles:
+            await member.remove_roles(role)
+
+        channel = get(member.guild.channels, name="general")
+        await channel.send(f"{member.mention} has left the server.")
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild, user):
