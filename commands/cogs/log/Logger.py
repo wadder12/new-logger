@@ -1025,7 +1025,7 @@ class Logger(commands.Cog):
         await self.logger_channel.send(embed=embed)
   
   
-  
+
     @commands.Cog.listener()
     async def on_guild_audit_log_entry_create(self, entry):
         embed = nextcord.Embed(title='Audit Log Updated', color=nextcord.Color.dark_gold())
