@@ -17,7 +17,37 @@ bot = commands.Bot(command_prefix='q', intents=nextcord.Intents.all(), activity=
 
 @bot.event
 async def on_ready():
-    print('---------------------------------------')
+
+  # Fancy start up banner
+  print(f"""
+
+██████╗  ██████╗ ███╗   ███╗███████╗     ██████╗ ██████╗ ███╗   ███╗███████╗
+██╔═══██╗██╔═══██╗████╗ ████║██╔════╝    ██╔════╝██╔═══██╗████╗ ████║██╔════╝
+██║   ██║██║   ██║██╔████╔██║█████╗      ██║     ██║   ██║██╔████╔██║█████╗  
+██║▄▄ ██║██║▄▄ ██║██║╚██╔╝██║██╔══╝      ██║     ██║▄▄ ██║██║╚██╔╝██║██╔══╝  
+╚██████╔╝╚██████╔╝██║ ╚═╝ ██║███████╗    ╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+ ╚══▀▀═╝  ╚══▀▀═╝ ╚═╝     ╚═╝╚══════╝     ╚═════╝ ╚══▀▀═╝ ╚═╝     ╚═╝╚══════╝
+                                                                                
+""")
+
+  # Print out server count in a cool style
+  guild_count = len(bot.guilds)
+  print(f"> Connected to {guild_count} servers!")
+
+  
+
+  # Send a neat embed to log channel
+  embed = nextcord.Embed(title="Bot is ready!", color=0x00ff00)
+  embed.set_thumbnail(url=bot.user.avatar.url)
+  embed.add_field(name="Servers", value=guild_count, inline=True)
+  embed.add_field(name="Latency", value=f"{bot.latency*1000:.2f} ms", inline=True)
+  
+  log_channel = bot.get_channel(1116541851516817469)
+  await log_channel.send(embed=embed)
+
+  
+  
+  print(f"> {bot.user.name} is ready to go!")
     
 
 
