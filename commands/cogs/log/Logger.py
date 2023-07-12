@@ -1044,9 +1044,9 @@ class Logger(commands.Cog):
             target_name = f"Stage Channel: {target.name}"
             
         elif isinstance(target, nextcord.Webhook):
-            target_name = f"Webhook: {target.name}"
-            if target.id:
-                target_name += f" (ID: {target.id})"
+            target_name = await self.fetch_webhook_name(target.id)
+            if target_name is None:
+                target_name = f"Unknown target (ID: {target.id})"
 
         elif isinstance(target, nextcord.Thread):
             target_name = f"Thread: {target.name}"
