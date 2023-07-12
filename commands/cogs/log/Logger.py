@@ -744,6 +744,44 @@ class Logger(commands.Cog):
             await self.logger_channel.send(embed=embed)
 
     # Add checks for other role changes  
+    
+    
+    
+    
+    @commands.Cog.listener()
+    async def on_guild_emojis_update(self, guild, before, after):
+
+        if len(before) < len(after):
+            # New emojis added
+            new = [e for e in after if e not in before]
+            embed = nextcord.Embed(title='Emojis Added', color=nextcord.Color.green())
+            embed.add_field(name='Emojis', value=', '.join([str(e) for e in new]))
+
+        if len(before) > len(after):
+            # Emojis removed
+            removed = [e for e in before if e not in after]
+            embed = nextcord.Embed(title='Emojis Removed', color=nextcord.Color.red())
+            embed.add_field(name='Emojis', value=', '.join([str(e) for e in removed]))
+
+        await self.logger_channel.send(embed=embed)
+
+
+    @commands.Cog.listener()
+    async def on_guild_stickers_update(self, guild, before, after):
+
+        if len(before) < len(after):
+            # New stickers added
+            new = [s for s in after if s not in before]
+            embed = nextcord.Embed(title='Stickers Added', color=nextcord.Color.green())
+            embed.add_field(name='Stickers', value='\n'.join([str(s) for s in new]))
+
+        if len(before) > len(after):
+            # Stickers removed
+            removed = [s for s in before if s not in after] 
+            embed = nextcord.Embed(title='Stickers Removed', color=nextcord.Color.red())
+            embed.add_field(name='Stickers', value='\n'.join([str(s) for s in removed]))
+
+        await self.logger_channel.send(embed=embed)
             
             
             
