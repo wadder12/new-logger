@@ -55,12 +55,12 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-
+        timestamp = message.created_at.strftime("%b %d, %Y %I:%M %p")
         embed = nextcord.Embed(title='Message Log', color=nextcord.Color.blue())
         embed.set_author(name=str(message.author), icon_url=message.author.avatar.url)
         embed.add_field(name='Author', value=message.author.mention)
         embed.add_field(name='Channel', value=message.channel.mention)
-        embed.add_field(name='Time', value=message.created_at.strftime("%H:%M:%S"))
+        embed.add_field(name='Time', value=timestamp)
         embed.add_field(name='Content', value=message.content, inline=False)
 
         if len(message.attachments) > 0:
