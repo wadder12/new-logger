@@ -968,6 +968,54 @@ class Logger(commands.Cog):
 
         await self.logger_channel.send(embed=embed)
             
+            
+            
+    @commands.Cog.listener()
+    async def on_auto_moderation_rule_update(self, before, after):
+
+        if before.name != after.name:
+            # Rule name updated
+            embed = nextcord.Embed(title='AutoMod Rule Name Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before.name)
+            embed.add_field(name='After', value=after.name)
+
+            await self.logger_channel.send(embed=embed)
+
+        if before.enabled != after.enabled:
+            # Enabled status changed
+            embed = nextcord.Embed(title='AutoMod Rule Status Updated', color=nextcord.Color.orange())
+            embed.add_field(name='Before', value=before.enabled)
+            embed.add_field(name='After', value=after.enabled)
+
+            await self.logger_channel.send(embed=embed)
+    
+  # Check other relevant fields for changes
+  
+  
+  
+  
+    @commands.Cog.listener()
+    async def on_auto_moderation_rule_delete(self, rule):
+
+        embed = nextcord.Embed(title='AutoMod Rule Deleted', color=nextcord.Color.red())
+
+        embed.add_field(name='Rule', value=rule.name)
+        embed.add_field(name='Rule ID', value=rule.id)
+
+        await self.logger_channel.send(embed=embed)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
                 
     def cog_unload(self):
         self.save_config()
