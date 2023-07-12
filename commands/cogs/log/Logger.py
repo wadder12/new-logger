@@ -653,11 +653,55 @@ class Logger(commands.Cog):
 
             await self.logger_channel.send(embed=embed)       
             
+    """ # ! need to add webhook for me personally 
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+
+        embed = nextcord.Embed(title='New Guild Added', color=nextcord.Color.green())
+        embed.add_field(name='Guild', value=guild.name)
+        embed.add_field(name='Guild ID', value=guild.id) 
+        embed.add_field(name='Owner', value=guild.owner)
+        embed.add_field(name='Member Count', value=guild.member_count)
+
+        await self.logger_channel.send(embed=embed) 
+        
+        
+    @commands.Cog.listener() 
+    async def on_guild_remove(self, guild):
+
+        embed = nextcord.Embed(title='Removed from Guild', color=nextcord.Color.red())
+        embed.add_field(name='Guild', value=guild.name)
+        embed.add_field(name='Guild ID', value=guild.id)
+        embed.add_field(name='Owner', value=guild.owner)
+        embed.add_field(name='Member Count', value=guild.member_count)
+
+        await self.logger_channel.send(embed=embed)       
+            
+    """
             
             
             
             
-            
+    @commands.Cog.listener()
+    async def on_guild_update(self, before, after):
+
+        if before.name != after.name:
+            # Guild name changed
+            embed = nextcord.Embed(title='Guild Name Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Before', value=before.name)
+            embed.add_field(name='After', value=after.name)
+
+            await self.logger_channel.send(embed=embed)
+
+        if before.region != after.region:
+            # Guild region changed
+            embed = nextcord.Embed(title='Guild Region Updated', color=nextcord.Color.green())
+            embed.add_field(name='Before', value=before.region)
+            embed.add_field(name='After', value=after.region)
+
+            await self.logger_channel.send(embed=embed) 
+        
+    # Add additional checks for relevant guild changes
             
             
             
