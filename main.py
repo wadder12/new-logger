@@ -13,7 +13,7 @@ load_dotenv()
 token = os.getenv('TOKEN')
 
 
-bot = commands.Bot(command_prefix='q', intents=nextcord.Intents.all(), activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="the systems | QuantaAI"))
+bot = commands.Bot(command_prefix='q', intents=nextcord.Intents.all(), activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="your discord server!"))
 
 @bot.event
 async def on_ready():
