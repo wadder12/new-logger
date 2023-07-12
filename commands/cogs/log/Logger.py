@@ -956,6 +956,8 @@ class Logger(commands.Cog):
         embed.add_field(name='User', value=user.mention)
 
         await self.logger_channel.send(embed=embed)
+        
+    nextcord.on_auto_moderation_rule_create(rule)
             
                 
     def cog_unload(self):
