@@ -120,13 +120,26 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        if self.logger_channel:
-            if before.display_name != after.display_name:
-                embed = nextcord.Embed(title='Member Updated', color=nextcord.Color.blue())
-                embed.add_field(name='Member', value=after.mention)
-                embed.add_field(name='Before', value=before.display_name)
-                embed.add_field(name='After', value=after.display_name)
-                await self.logger_channel.send(embed=embed)
+
+        if before.roles != after.roles:
+            # Roles changed
+            
+            embed = nextcord.Embed(title='Roles Updated', color=nextcord.Color.blue())
+            embed.add_field(name='Member', value=after.mention)
+            embed.add_field(name='Before', value=', '.join([r.mention for r in before.roles]))
+            embed.add_field(name='After', value=', '.join([r.mention for r in after.roles]))
+
+            await self.logger_channel.send(embed=embed)
+
+        if before.nick != after.nick:
+            # Nickname changed
+
+            embed = nextcord.Embed(title='Nickname Updated', color=nextcord.Color.green())
+            embed.add_field(name='Member', value=after.mention)
+            embed.add_field(name='Before', value=before.nick)
+            embed.add_field(name='After', value=after.nick)
+
+        await self.logger_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
@@ -575,8 +588,82 @@ class Logger(commands.Cog):
             
             await self.logger_channel.send(embed=embed)
 
+    @commands.Cog.listener() 
+    async def on_webhooks_update(self, channel):
 
+        if self.logger_channel:
 
+            before = len(await channel.webhooks())
+            after = len(await channel.webhooks())
+
+            embed = nextcord.Embed(title='Webhooks Updated', color=nextcord.Color.purple())
+            embed.add_field(name='Channel', value=channel.mention)
+            embed.add_field(name='Before', value=before) 
+            embed.add_field(name='After', value=after)
+
+            if before < after:
+                # Webhooks were added
+                for webhook in await channel.webhooks():
+                    if webhook.token:
+                        embed.add_field(name='Added', value=f"{webhook.name} ({webhook.url})")
+                else:
+                    embed.add_field(name='Added', value=webhook.name)
+
+            elif before > after:
+                # Webhooks were removed
+                pass
+
+            await self.logger_channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_raw_member_remove(self, payload):
+
+        guild = self.bot.get_guild(payload.guild_id)
+        user = await self.bot.fetch_user(payload.user.id)
+
+        if self.logger_channel:
+
+            embed = nextcord.Embed(title='Member Left', color=nextcord.Color.red())
+            embed.add_field(name='Member', value=f'{user} (ID: {user.id})')
+            embed.add_field(name='Guild', value=guild.name)
+            await self.logger_channel.send(embed=embed)
+            
+            
+            
+    @commands.Cog.listener()
+    async def on_presence_update(self, before, after):
+
+        guild = after.guild
+
+        if before.status != after.status:
+            # Status changed
+            embed = nextcord.Embed(title='Status Updated', color=nextcord.Color.gold())
+            embed.add_field(name='Member', value=after.mention)
+            embed.add_field(name='Before', value=before.status)
+            embed.add_field(name='After', value=after.status)
+
+            await self.logger_channel.send(embed=embed)
+
+        if before.activity != after.activity:
+            # Activity changed
+            embed = nextcord.Embed(title='Activity Updated', color=nextcord.Color.green())
+            embed.add_field(name='Member', value=after.mention)
+            embed.add_field(name='Before', value=before.activity)
+            embed.add_field(name='After', value=after.activity)
+
+            await self.logger_channel.send(embed=embed)       
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
                 
     def cog_unload(self):
         self.save_config()
