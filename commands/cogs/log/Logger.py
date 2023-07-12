@@ -553,7 +553,27 @@ class Logger(commands.Cog):
             await self.logger_channel.send(embed=embed)
 
 
+    @commands.Cog.listener() 
+    async def on_integration_update(self, integration):
+    
+        if self.logger_channel:
+        
+            embed = nextcord.Embed(title='Integration Updated', color=nextcord.Color.blue())
+            
+            embed.add_field(name='Integration', value=integration.name)
+            
+            await self.logger_channel.send(embed=embed) 
+            
+    @commands.Cog.listener()
+    async def on_raw_integration_delete(self, payload):
 
+        if self.logger_channel:
+
+            embed = nextcord.Embed(title='Integration Deleted', color=nextcord.Color.red())
+            
+            embed.add_field(name='Integration ID', value=payload.integration_id)
+            
+            await self.logger_channel.send(embed=embed)
 
 
 
