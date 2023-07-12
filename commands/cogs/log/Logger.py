@@ -793,7 +793,8 @@ class Logger(commands.Cog):
         await self.logger_channel.send(embed=embed)
             
             
-            
+        """
+                   
     @commands.Cog.listener()
     async def on_guild_available(self, guild):
 
@@ -815,7 +816,9 @@ class Logger(commands.Cog):
         embed.add_field(name='Region', value=guild.region)
         embed.add_field(name='Owner', value=guild.owner)
 
-        await self.logger_channel.send(embed=embed)
+        await self.logger_channel.send(embed=embed) 
+        
+    """ 
             
             
     @commands.Cog.listener()
