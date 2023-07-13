@@ -199,7 +199,7 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild, user):  
-        current_time = datetime.utcnow()
+        
         
         embed = nextcord.Embed(title='Member Banned', color=nextcord.Color.dark_red())
         embed.set_thumbnail(url=user.avatar.url)
@@ -213,7 +213,7 @@ class Logger(commands.Cog):
             if moderator:
                 embed.add_field(name='Banned By', value=f'{moderator} (ID: {moderator.id})')
         
-        embed.timestamp = current_time
+        
         
         if self.logger_channel:
             await self.logger_channel.send(embed=embed)
