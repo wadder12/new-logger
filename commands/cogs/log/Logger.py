@@ -92,7 +92,7 @@ class Logger(commands.Cog):
                 await self.logger_channel.send(embed=embed)
             
     @commands.Cog.listener()
-    async def on_message_delete(self, message):
+    async def on_message_delete(self, message): # not showing the deleted message 
 
         
 
