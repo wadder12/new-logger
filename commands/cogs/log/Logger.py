@@ -1,3 +1,4 @@
+import datetime
 import json
 import nextcord
 from nextcord.ext import commands
@@ -198,9 +199,28 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild, user):
+
+        if user.bot:
+            return
+
+        embed = nextcord.Embed(title='Member Banned', color=nextcord.Color.dark_red())
+
+        embed.set_thumbnail(url=user.avatar.url)
+
+        embed.add_field(name='Member', value=f'{user} (ID: {user.id})')
+
+        moderator = None
+        if guild.me.guild_permissions.view_audit_log:
+            audit_log = await guild.audit_logs(limit=1, action=nextcord.AuditLogAction.ban).flatten()
+            audit_entry = audit_log[0]
+            moderator = audit_entry.user
+
+        if moderator:  
+            embed.add_field(name='Banned By', value=f'{moderator} (ID: {moderator.id})')
+
+        embed.timestamp = datetime.utcnow()
+
         if self.logger_channel:
-            embed = nextcord.Embed(title='Member Banned', color=nextcord.Color.dark_red())
-            embed.add_field(name='Member', value=user.mention)
             await self.logger_channel.send(embed=embed)
 
     @commands.Cog.listener()
