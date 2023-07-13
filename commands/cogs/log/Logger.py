@@ -200,8 +200,7 @@ class Logger(commands.Cog):
     @commands.Cog.listener()
     async def on_member_ban(self, guild, user):
 
-        if user.bot:
-            return
+        
 
         embed = nextcord.Embed(title='Member Banned', color=nextcord.Color.dark_red())
 
