@@ -96,18 +96,17 @@ class Logger(commands.Cog):
 
         
 
-            embed = nextcord.Embed(title='Message Deleted', color=nextcord.Color.red())
+            embed = nextcord.Embed(color=nextcord.Color.red())
+
             embed.set_author(name=str(message.author), icon_url=message.author.avatar.url)
 
             embed.add_field(name='Author', value=message.author.mention)
             embed.add_field(name='Channel', value=message.channel.mention)
 
+            embed.description = message.content[:1024]
+
             if len(message.content) > 1024:
-                content = f"{message.content[:1021]}..."
-            else: 
-                content = message.content
-            
-            embed.add_field(name='Content', value=content, inline=False)
+                embed.description += f"... (truncated)"
 
             embed.set_footer(text=f"Deleted at {message.created_at.strftime('%m/%d/%Y %I:%M:%S %p')}")
 
