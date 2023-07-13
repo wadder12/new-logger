@@ -3,7 +3,7 @@ import json
 import nextcord
 from nextcord.ext import commands
 from nextcord.webhook import Webhook
-
+from nextcord.utils import datetime
 from nextcord.utils import get
 
 class Logger(commands.Cog):
@@ -198,27 +198,23 @@ class Logger(commands.Cog):
         await channel.send(f"{member.mention} has left the server.")
 
     @commands.Cog.listener()
-    async def on_member_ban(self, guild, user):
-
+    async def on_member_ban(self, guild, user):  
+        current_time = datetime.utcnow()
         
-
         embed = nextcord.Embed(title='Member Banned', color=nextcord.Color.dark_red())
-
         embed.set_thumbnail(url=user.avatar.url)
-
         embed.add_field(name='Member', value=f'{user} (ID: {user.id})')
 
-        moderator = None
         if guild.me.guild_permissions.view_audit_log:
             audit_log = await guild.audit_logs(limit=1, action=nextcord.AuditLogAction.ban).flatten()
             audit_entry = audit_log[0]
             moderator = audit_entry.user
 
-        if moderator:  
-            embed.add_field(name='Banned By', value=f'{moderator} (ID: {moderator.id})')
-
-        embed.timestamp = datetime.utcnow()
-
+            if moderator:
+                embed.add_field(name='Banned By', value=f'{moderator} (ID: {moderator.id})')
+        
+        embed.timestamp = current_time
+        
         if self.logger_channel:
             await self.logger_channel.send(embed=embed)
 
