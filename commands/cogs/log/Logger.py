@@ -139,7 +139,12 @@ class Logger(commands.Cog):
                 
             embed.add_field(name='After', value=after_content, inline=False)
 
-            embed.set_footer(text=f"Edited at {before.edited_at.strftime('%m/%d/%Y %I:%M:%S %p')}")
+            if before.edited_at:
+                footer_text = f"Edited at {before.edited_at.strftime('%m/%d/%Y %I:%M:%S %p')}"
+            else:
+                footer_text = "Message reposted, not edited."
+
+            embed.set_footer(text=footer_text)
 
             if self.logger_channel and before.channel != self.logger_channel:
                 msg = await self.logger_channel.send(embed=embed)
