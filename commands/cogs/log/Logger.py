@@ -115,8 +115,8 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener() 
     async def on_message_edit(self, before, after):
-
-        if not before.author.bot:
+        
+        
 
             embed = nextcord.Embed(title='Message Edited', color=nextcord.Color.orange())
             
