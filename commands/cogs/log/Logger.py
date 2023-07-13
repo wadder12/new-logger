@@ -113,15 +113,37 @@ class Logger(commands.Cog):
             if self.logger_channel and message.channel != self.logger_channel:
                 await self.logger_channel.send(embed=embed)
 
-    @commands.Cog.listener()
+    @commands.Cog.listener() 
     async def on_message_edit(self, before, after):
-        if self.logger_channel and before.channel != self.logger_channel:
+
+        if not before.author.bot:
+
             embed = nextcord.Embed(title='Message Edited', color=nextcord.Color.orange())
+            
+            embed.set_author(name=str(before.author), icon_url=before.author.avatar.url)
+
             embed.add_field(name='Author', value=before.author.mention)
             embed.add_field(name='Channel', value=before.channel.mention)
-            embed.add_field(name='Before', value=before.content)
-            embed.add_field(name='After', value=after.content)
-            await self.logger_channel.send(embed=embed)
+
+            if len(before.content) > 1024:
+                before_content = before.content[:1021] + "..."
+            else:
+                before_content = before.content
+            
+            embed.add_field(name='Before', value=before_content, inline=False)
+
+            if len(after.content) > 1024:
+                after_content = after.content[:1021] + "..."
+            else:
+                after_content = after.content
+                
+            embed.add_field(name='After', value=after_content, inline=False)
+
+            embed.set_footer(text=f"Edited at {before.edited_at.strftime('%m/%d/%Y %I:%M:%S %p')}")
+
+            if self.logger_channel and before.channel != self.logger_channel:
+                msg = await self.logger_channel.send(embed=embed)
+                await msg.add_reaction('⏪')
 
 # * end of on message
 
